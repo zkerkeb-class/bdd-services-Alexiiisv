@@ -1,7 +1,9 @@
-require("dotenv").config();
-const { pool } = require("../config/database");
+import dotenv from "dotenv";
+import { pool } from "../config/database";
 
-const createTables = async () => {
+dotenv.config();
+
+const createTables = async (): Promise<void> => {
   try {
     // Création de la table users
     await pool.query(`

@@ -1,9 +1,10 @@
-const express = require("express");
-const router = express.Router();
-const { pool } = require("../config/database");
+import express, { Router, Request, Response } from "express";
+import { pool } from "../config/database";
+
+const router: Router = express.Router();
 
 // Exemple de route GET
-router.get("/test", async (req, res) => {
+router.get("/test", async (req: Request, res: Response) => {
   try {
     const result = await pool.query("SELECT NOW()");
     res.json({
@@ -17,7 +18,7 @@ router.get("/test", async (req, res) => {
 });
 
 // Exemple de route POST
-router.post("/data", async (req, res) => {
+router.post("/data", async (req: Request, res: Response) => {
   const { name, value } = req.body;
   try {
     const result = await pool.query(
@@ -31,4 +32,4 @@ router.post("/data", async (req, res) => {
   }
 });
 
-module.exports = router;
+export default router;
