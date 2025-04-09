@@ -9,7 +9,8 @@
     "build": "tsc",
     "watch": "tsc -w",
     "test": "jest",
-    "init-db": "ts-node src/scripts/init-db.ts"
+    "init-db": "ts-node src/scripts/init-db.ts",
+    "seed": "ts-node src/scripts/seed-users.ts"
   },
   "keywords": [],
   "author": "",
@@ -21,7 +22,9 @@
     "dotenv": "^16.3.1",
     "cors": "^2.8.5",
     "helmet": "^7.1.0",
-    "morgan": "^1.10.0"
+    "morgan": "^1.10.0",
+    "bcrypt": "^5.1.1",
+    "@faker-js/faker": "^8.4.1"
   },
   "devDependencies": {
     "@types/cors": "^2.8.17",
@@ -29,6 +32,7 @@
     "@types/morgan": "^1.9.9",
     "@types/node": "^20.11.0",
     "@types/pg": "^8.10.9",
+    "@types/bcrypt": "^5.0.2",
     "nodemon": "^3.0.2",
     "ts-node": "^10.9.2",
     "typescript": "^5.3.3",
