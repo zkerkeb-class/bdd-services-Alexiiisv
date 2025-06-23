@@ -3,7 +3,6 @@ import express, { Express, Request, Response, NextFunction } from "express";
 import cors from "cors";
 import helmet from "helmet";
 import morgan from "morgan";
-import { pool } from "./config/database";
 import routes from "./routes";
 
 dotenv.config();

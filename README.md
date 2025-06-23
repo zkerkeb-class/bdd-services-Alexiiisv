@@ -43,18 +43,6 @@ cp .env.local .env
 # Modifier les variables dans .env
 ```
 
-3. Démarrer la base de données :
-
-```bash
-docker-compose up -d
-```
-
-4. Initialiser la base de données :
-
-```bash
-npm run init-db
-```
-
 ## Démarrage
 
 ```bash
@@ -76,5 +64,5 @@ npm start
 - `npm run dev` : Mode développement
 - `npm run build` : Compilation TypeScript
 - `npm start` : Mode production
-- `npm run init-db` : Initialisation BDD
+- `npm run seed` : Fake data
 - `npm test` : Tests
