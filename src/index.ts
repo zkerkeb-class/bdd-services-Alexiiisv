@@ -2,7 +2,7 @@ import dotenv from "dotenv";
 import express, { Express, Request, Response, NextFunction } from "express";
 import cors from "cors";
 import helmet from "helmet";
-import morgan from "morgan";
+import { loggingMiddleware } from "./middleware/logging.middleware";
 import routes from "./routes";
 
 dotenv.config();
@@ -13,7 +13,7 @@ const PORT: number = parseInt(process.env.PORT || "3000", 10);
 // Middleware
 app.use(helmet()); // Sécurité
 app.use(cors()); // Gestion des CORS
-app.use(morgan("dev")); // Logging
+app.use(loggingMiddleware); // Logging personnalisé avec Supabase
 app.use(express.json()); // Parser JSON
 
 // Routes
