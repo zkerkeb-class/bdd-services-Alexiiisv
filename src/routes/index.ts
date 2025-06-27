@@ -32,6 +32,7 @@ router.get("/users", UserController.getAllUsers);
 router.get("/users/search", UserController.searchUsers);
 router.get("/users/:id", UserController.getUserById);
 router.post("/users", UserController.createUser);
+router.post("/users/login", UserController.loginUser);
 router.put("/users/:id", UserController.updateUser);
 router.delete("/users/:id", UserController.deleteUser);
 

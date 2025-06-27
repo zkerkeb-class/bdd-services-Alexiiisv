@@ -11,6 +11,10 @@ export interface HttpLog {
   user_agent?: string | undefined;
   referrer?: string | undefined;
   error_message?: string;
+  log_type?: 'http' | 'email';
+  email_type?: string;
+  user_email?: string;
+  notification_id?: string;
 }
 
 export class LogService {

@@ -46,6 +46,32 @@ En cas d'erreur :
 }
 ```
 
+#### Connexion utilisateur
+- **POST** `/users/login`
+- **Body :**
+```json
+{
+  "email": "string",
+  "password": "string"
+}
+```
+- **Réponse :**
+```json
+{
+  "success": true,
+  "data": {
+    "user": {
+      "id": "number",
+      "username": "string",
+      "email": "string",
+      "created_at": "string",
+      "updated_at": "string"
+    },
+    "token": "string"
+  }
+}
+```
+
 #### Modifier un utilisateur
 - **PUT** `/users/:id`
 - **Paramètres :** `id` (number)
@@ -404,161 +430,4 @@ En cas d'erreur :
 - **GET** `/seances/date-range?start=date&end=date`
 - **Paramètres de requête :** 
   - `start` (string) - Date de début (format ISO)
-  - `end` (string) - Date de fin (format ISO)
-
-### Liaisons Voie-Séance
-
-#### Récupérer toutes les liaisons voie-séance
-- **GET** `/voie-seances`
-- **Réponse :** Liste de toutes les liaisons
-
-#### Récupérer une liaison par ID
-- **GET** `/voie-seances/:id`
-- **Paramètres :** `id` (number)
-- **Réponse :** Détails de la liaison
-
-#### Récupérer les voies d'une séance
-- **GET** `/voie-seances/seance/:seanceId`
-- **Paramètres :** `seanceId` (number)
-- **Réponse :** Voies de la séance
-
-#### Récupérer les voies d'une séance avec détails
-- **GET** `/voie-seances/seance/:seanceId/complete`
-- **Paramètres :** `seanceId` (number)
-- **Réponse :** Voies de la séance avec détails complets
-
-#### Récupérer les séances d'une voie
-- **GET** `/voie-seances/voie/:voieId`
-- **Paramètres :** `voieId` (number)
-- **Réponse :** Séances de la voie
-
-#### Créer une liaison voie-séance
-- **POST** `/voie-seances`
-- **Body :**
-```json
-{
-  "seance_id": "number (requis)",
-  "voie_id": "number (requis)",
-  "reussie": "boolean",
-  "avis": "string"
-}
-```
-
-#### Créer plusieurs liaisons voie-séance
-- **POST** `/voie-seances/batch`
-- **Body :**
-```json
-{
-  "voieSeances": [
-    {
-      "seance_id": "number",
-      "voie_id": "number",
-      "reussie": "boolean",
-      "avis": "string"
-    }
-  ]
-}
-```
-
-#### Modifier une liaison voie-séance
-- **PUT** `/voie-seances/:id`
-- **Paramètres :** `id` (number)
-- **Body :** (tous les champs optionnels)
-```json
-{
-  "reussie": "boolean",
-  "avis": "string"
-}
-```
-
-#### Supprimer une liaison voie-séance
-- **DELETE** `/voie-seances/:id`
-- **Paramètres :** `id` (number)
-
-#### Supprimer toutes les voies d'une séance
-- **DELETE** `/voie-seances/seance/:seanceId`
-- **Paramètres :** `seanceId` (number)
-
-#### Rechercher des liaisons voie-séance
-- **GET** `/voie-seances/search?field=value`
-- **Paramètres de requête :** Champs à filtrer
-
-#### Obtenir les statistiques d'un utilisateur
-- **GET** `/voie-seances/stats/user/:userId`
-- **Paramètres :** `userId` (number)
-- **Réponse :** Statistiques des voies de l'utilisateur
-
-## Codes de statut HTTP
-
-- **200** - Succès
-- **201** - Créé avec succès
-- **400** - Requête invalide
-- **401** - Non autorisé (session expirée)
-- **404** - Ressource non trouvée
-- **500** - Erreur serveur
-
-## Exemples d'utilisation
-
-### Créer une salle avec localisation
-```bash
-# 1. Créer la localisation
-curl -X POST http://localhost:3000/api/localisations \
-  -H "Content-Type: application/json" \
-  -d '{
-    "latitude": 48.8566,
-    "longitude": 2.3522
-  }'
-
-# 2. Créer la salle
-curl -X POST http://localhost:3000/api/salles \
-  -H "Content-Type: application/json" \
-  -d '{
-    "nom": "Salle de test",
-    "description": "Une salle d'escalade",
-    "email": "contact@salle.com",
-    "telephone": "0123456789",
-    "localisation": 1
-  }'
-```
-
-### Créer une séance avec voies
-```bash
-# 1. Créer la séance
-curl -X POST http://localhost:3000/api/seances \
-  -H "Content-Type: application/json" \
-  -d '{
-    "user_id": 1,
-    "date": "2024-01-15T10:00:00Z",
-    "avis": "Bonne séance"
-  }'
-
-# 2. Ajouter des voies à la séance
-curl -X POST http://localhost:3000/api/voie-seances/batch \
-  -H "Content-Type: application/json" \
-  -d '{
-    "voieSeances": [
-      {
-        "seance_id": 1,
-        "voie_id": 1,
-        "reussie": true,
-        "avis": "Voie réussie"
-      },
-      {
-        "seance_id": 1,
-        "voie_id": 2,
-        "reussie": false,
-        "avis": "À retenter"
-      }
-    ]
-  }'
-```
-
-### Rechercher des salles par nom
-```bash
-curl "http://localhost:3000/api/salles/search?nom=Salle"
-```
-
-### Obtenir les statistiques d'un utilisateur
-```bash
-curl "http://localhost:3000/api/voie-seances/stats/user/1"
-``` 
+  - `

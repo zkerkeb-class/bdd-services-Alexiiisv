@@ -55,42 +55,53 @@ Content-Type: application/json
 ###
 
 ### 8. Rechercher des utilisateurs par email
-GET {{baseUrl}}/api/users/search?email=test@example.com
+GET {{baseUrl}}/api/users/search?email=testuser@example.com
 Content-Type: application/json
 
 ###
 
-### 9. ID invalide (string au lieu de number)
+### 9. Connexion utilisateur
+POST {{baseUrl}}/api/users/login
+Content-Type: application/json
+
+{
+  "email": "testuser@example.com",
+  "password": "Test12345!"
+}
+
+###
+
+### 10. ID invalide (string au lieu de number)
 GET {{baseUrl}}/api/users/abc
 Content-Type: application/json
 
 ###
 
-### 10. ID inexistant (très grand nombre)
+### 11. ID inexistant (très grand nombre)
 GET {{baseUrl}}/api/users/999999
 Content-Type: application/json
 
 ###
 
-### 11. ID négatif
+### 12. ID négatif
 GET {{baseUrl}}/api/users/-1
 Content-Type: application/json
 
 ###
 
-### 12. ID décimal
+### 13. ID décimal
 GET {{baseUrl}}/api/users/1.5
 Content-Type: application/json
 
 ###
 
-### 13. ID avec caractères spéciaux
+### 14. ID avec caractères spéciaux
 GET {{baseUrl}}/api/users/1@2
 Content-Type: application/json
 
 ###
 
-### 14. Données manquantes - pas de username
+### 15. Données manquantes - pas de username
 POST {{baseUrl}}/api/users
 Content-Type: application/json
 
@@ -101,7 +112,7 @@ Content-Type: application/json
 
 ###
 
-### 15. Données manquantes - pas d'email
+### 16. Données manquantes - pas d'email
 POST {{baseUrl}}/api/users
 Content-Type: application/json
 
@@ -112,7 +123,7 @@ Content-Type: application/json
 
 ###
 
-### 16. Données manquantes - pas de password
+### 17. Données manquantes - pas de password
 POST {{baseUrl}}/api/users
 Content-Type: application/json
 
@@ -123,7 +134,7 @@ Content-Type: application/json
 
 ###
 
-### 17. Email invalide
+### 18. Email invalide
 POST {{baseUrl}}/api/users
 Content-Type: application/json
 
@@ -135,7 +146,7 @@ Content-Type: application/json
 
 ###
 
-### 18. Password trop court
+### 19. Password trop court
 POST {{baseUrl}}/api/users
 Content-Type: application/json
 
@@ -147,7 +158,7 @@ Content-Type: application/json
 
 ###
 
-### 19. Username avec caractères spéciaux
+### 20. Username avec caractères spéciaux
 POST {{baseUrl}}/api/users
 Content-Type: application/json
 
@@ -159,7 +170,7 @@ Content-Type: application/json
 
 ###
 
-### 20. Body vide
+### 21. Body vide
 POST {{baseUrl}}/api/users
 Content-Type: application/json
 
@@ -167,7 +178,7 @@ Content-Type: application/json
 
 ###
 
-### 21. ID invalide pour mise à jour
+### 22. ID invalide pour mise à jour
 PUT {{baseUrl}}/api/users/abc
 Content-Type: application/json
 
@@ -177,7 +188,7 @@ Content-Type: application/json
 
 ###
 
-### 22. ID inexistant pour mise à jour
+### 23. ID inexistant pour mise à jour
 PUT {{baseUrl}}/api/users/999999
 Content-Type: application/json
 
@@ -187,7 +198,7 @@ Content-Type: application/json
 
 ###
 
-### 23. Mise à jour avec email invalide
+### 24. Mise à jour avec email invalide
 PUT {{baseUrl}}/api/users/{{userId}}
 Content-Type: application/json
 
@@ -197,7 +208,7 @@ Content-Type: application/json
 
 ###
 
-### 24. Mise à jour avec password trop court
+### 25. Mise à jour avec password trop court
 PUT {{baseUrl}}/api/users/{{userId}}
 Content-Type: application/json
 
@@ -207,7 +218,7 @@ Content-Type: application/json
 
 ###
 
-### 25. Body vide pour mise à jour
+### 26. Body vide pour mise à jour
 PUT {{baseUrl}}/api/users/{{userId}}
 Content-Type: application/json
 
@@ -215,37 +226,37 @@ Content-Type: application/json
 
 ###
 
-### 26. ID invalide pour suppression
+### 27. ID invalide pour suppression
 DELETE {{baseUrl}}/api/users/abc
 Content-Type: application/json
 
 ###
 
-### 27. ID inexistant pour suppression
+### 28. ID inexistant pour suppression
 DELETE {{baseUrl}}/api/users/999999
 Content-Type: application/json
 
 ###
 
-### 28. Recherche sans paramètres
+### 29. Recherche sans paramètres
 GET {{baseUrl}}/api/users/search
 Content-Type: application/json
 
 ###
 
-### 29. Recherche avec paramètre invalide
+### 30. Recherche avec paramètre invalide
 GET {{baseUrl}}/api/users/search?invalid=value
 Content-Type: application/json
 
 ###
 
-### 30. Recherche avec valeur vide
+### 31. Recherche avec valeur vide
 GET {{baseUrl}}/api/users/search?username=
 Content-Type: application/json
 
 ###
 
-### 31. Username long mais raisonnable
+### 32. Username long mais raisonnable
 POST {{baseUrl}}/api/users
 Content-Type: application/json
 
