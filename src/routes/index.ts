@@ -7,6 +7,7 @@ import { SalleController } from "../controllers/salle.controller";
 import { VoieController } from "../controllers/voie.controller";
 import { SeanceController } from "../controllers/seance.controller";
 import { VoieSeanceController } from "../controllers/voie-seance.controller";
+import { ChatConversationController } from "../controllers/chat-conversation.controller";
 import { supabase } from "../config/supabase";
 
 const router: Router = express.Router();
@@ -110,5 +111,17 @@ router.post("/voie-seances/batch", VoieSeanceController.createMultipleVoieSeance
 router.put("/voie-seances/:id", VoieSeanceController.updateVoieSeance);
 router.delete("/voie-seances/:id", VoieSeanceController.deleteVoieSeance);
 router.delete("/voie-seances/seance/:seanceId", VoieSeanceController.deleteAllVoieSeancesBySeance);
+
+// Routes CRUD pour les conversations de chat
+router.get("/chat-conversations", ChatConversationController.getAllConversations);
+router.get("/chat-conversations/search", ChatConversationController.searchConversations);
+router.get("/chat-conversations/stats/user/:userId", ChatConversationController.getUserConversationStats);
+router.get("/chat-conversations/:id", ChatConversationController.getConversationById);
+router.get("/chat-conversations/user/:userId", ChatConversationController.getConversationsByUserId);
+router.get("/chat-conversations/session/:conversationUid", ChatConversationController.getConversationsByUid);
+router.post("/chat-conversations", ChatConversationController.createConversation);
+router.put("/chat-conversations/:id", ChatConversationController.updateConversation);
+router.delete("/chat-conversations/:id", ChatConversationController.deleteConversation);
+router.delete("/chat-conversations/user/:userId", ChatConversationController.deleteUserConversations);
 
 export default router;

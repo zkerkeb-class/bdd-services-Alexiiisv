@@ -1,0 +1,132 @@
+### Variables d'environnement
+@baseUrl = http://localhost:3003
+@userId = 1
+@conversationId = 1
+@conversationUid = 123e4567-e89b-12d3-a456-426614174000
+
+### ========================================
+### ROUTES DES CONVERSATIONS DE CHAT
+### ========================================
+
+### 1. Récupérer toutes les conversations (avec pagination)
+GET {{baseUrl}}/chat-conversations?page=1&limit=20
+Content-Type: application/json
+
+### 2. Récupérer les conversations d'un utilisateur spécifique
+GET {{baseUrl}}/chat-conversations/user/{{userId}}?page=1&limit=20
+Content-Type: application/json
+
+### 3. Récupérer une conversation par son ID
+GET {{baseUrl}}/chat-conversations/{{conversationId}}
+Content-Type: application/json
+
+### 4. Récupérer toutes les conversations d'une session (par conversation_uid)
+GET {{baseUrl}}/chat-conversations/session/{{conversationUid}}
+Content-Type: application/json
+
+### 5. Créer une nouvelle conversation
+POST {{baseUrl}}/chat-conversations
+Content-Type: application/json
+
+{
+  "user_id": 1,
+  "message": "Comment améliorer ma technique de bloc ?",
+  "response": "• Pratiquez régulièrement • Travaillez votre équilibre • Utilisez vos jambes • Respirez calmement",
+  "conversation_uid": "123e4567-e89b-12d3-a456-426614174000"
+}
+
+### 6. Créer une conversation sans spécifier conversation_uid (généré automatiquement)
+POST {{baseUrl}}/chat-conversations
+Content-Type: application/json
+
+{
+  "user_id": 1,
+  "message": "Quelle est la meilleure façon de grimper en dévers ?",
+  "response": "• Gardez votre centre de gravité près du mur • Utilisez vos jambes pour pousser • Crochetez avec vos pieds • Restez en tension constante"
+}
+
+### 7. Mettre à jour une conversation
+PUT {{baseUrl}}/chat-conversations/{{conversationId}}
+Content-Type: application/json
+
+{
+  "message": "Comment améliorer ma technique de bloc ? (version corrigée)",
+  "response": "• Pratiquez régulièrement • Travaillez votre équilibre • Utilisez vos jambes • Respirez calmement • Ajoutez des exercices de renforcement"
+}
+
+### 8. Rechercher des conversations
+GET {{baseUrl}}/chat-conversations/search?q=technique&userId=1&page=1&limit=10
+Content-Type: application/json
+
+### 9. Obtenir les statistiques des conversations d'un utilisateur
+GET {{baseUrl}}/chat-conversations/stats/user/{{userId}}
+Content-Type: application/json
+
+### 10. Supprimer une conversation spécifique
+DELETE {{baseUrl}}/chat-conversations/{{conversationId}}
+Content-Type: application/json
+
+### 11. Supprimer toutes les conversations d'un utilisateur
+DELETE {{baseUrl}}/chat-conversations/user/{{userId}}
+Content-Type: application/json
+
+### ========================================
+### EXEMPLES DE RÉPONSES
+### ========================================
+
+### Réponse pour getAllConversations
+# {
+#   "conversations": [
+#     {
+#       "id": 1,
+#       "user_id": 1,
+#       "conversation_uid": "123e4567-e89b-12d3-a456-426614174000",
+#       "message": "Comment améliorer ma technique de bloc ?",
+#       "response": "• Pratiquez régulièrement • Travaillez votre équilibre • Utilisez vos jambes • Respirez calmement",
+#       "created_at": "2024-01-15T10:30:00Z",
+#       "updated_at": "2024-01-15T10:30:00Z",
+#       "users": {
+#         "username": "alex",
+#         "email": "alex@example.com"
+#       }
+#     }
+#   ],
+#   "pagination": {
+#     "page": 1,
+#     "limit": 20,
+#     "total": 1,
+#     "totalPages": 1
+#   }
+# }
+
+### Réponse pour getUserConversationStats
+# {
+#   "totalConversations": 15,
+#   "uniqueSessions": 8,
+#   "firstConversation": "2024-01-01T09:00:00Z",
+#   "lastConversation": "2024-01-15T10:30:00Z"
+# }
+
+### ========================================
+### CAS D'USAGE TYPIQUES
+### ========================================
+
+### Cas 1: Nouvelle session de conversation
+# 1. L'utilisateur commence une nouvelle conversation
+# 2. Le frontend génère un conversation_uid unique
+# 3. Chaque échange est sauvegardé avec ce même conversation_uid
+
+### Cas 2: Récupération de l'historique
+# 1. L'utilisateur se connecte
+# 2. Récupérer ses dernières conversations: GET /chat-conversations/user/{userId}
+# 3. Afficher l'historique dans l'interface
+
+### Cas 3: Continuité de conversation
+# 1. L'utilisateur reprend une conversation existante
+# 2. Récupérer la session: GET /chat-conversations/session/{conversationUid}
+# 3. Afficher le contexte précédent au bot IA
+
+### Cas 4: Recherche dans l'historique
+# 1. L'utilisateur cherche un conseil spécifique
+# 2. Utiliser: GET /chat-conversations/search?q=technique
+# 3. Afficher les résultats pertinents 
