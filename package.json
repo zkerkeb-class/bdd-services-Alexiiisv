@@ -9,7 +9,14 @@
     "build": "tsc",
     "watch": "tsc -w",
     "test": "jest",
-    "seed": "ts-node src/scripts/seed-users.ts"
+    "seed": "ts-node src/scripts/seed-users.ts",
+    "seed:users": "ts-node src/scripts/seed-users.ts",
+    "seed:salles": "ts-node src/scripts/seed-salles.ts",
+    "seed:voies": "ts-node src/scripts/seed-voies.ts",
+    "seed:seances": "ts-node src/scripts/seed-seances.ts",
+    "seed:chat": "ts-node src/scripts/seed-chat-conversations.ts",
+    "seed:logs": "ts-node src/scripts/seed-logs.ts",
+    "seed:all": "ts-node src/scripts/seed-all.ts"
   },
   "keywords": [],
   "author": "",
