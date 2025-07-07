@@ -60,6 +60,7 @@ export interface Voie {
   cotation?: string;
   description?: string;
   ouvreur?: string;
+  nom?: string;
   type_de_voie?: string;
   created_at?: string;
   updated_at?: string;
@@ -70,6 +71,7 @@ export interface Seance {
   user_id: number;
   date: string;
   avis?: string;
+  salle_id?: number;
 }
 
 export interface VoieSeance {

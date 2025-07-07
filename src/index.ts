@@ -21,13 +21,13 @@ app.use("/api", routes);
 
 // Route de test
 app.get("/health", (req: Request, res: Response) => {
-  res.json({ status: "OK", message: "Service is running" });
+  return res.json({ status: "OK", message: "Service is running" });
 });
 
 // Gestion des erreurs
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
   console.error(err.stack);
-  res.status(500).json({ error: "Something went wrong!" });
+  return res.status(500).json({ error: "Something went wrong!" });
 });
 
 // Démarrage du serveur

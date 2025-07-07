@@ -18,13 +18,13 @@ router.get("/test", async (req: Request, res: Response) => {
     const { data, error } = await supabase.from('users').select('count').limit(1);
     if (error) throw error;
     
-    res.json({
+    return res.json({
       message: "Supabase connection successful",
       timestamp: new Date().toISOString(),
     });
   } catch (err) {
     console.error(err);
-    res.status(500).json({ error: "Supabase connection error" });
+    return res.status(500).json({ error: "Supabase connection error" });
   }
 });
 
@@ -94,6 +94,7 @@ router.get("/seances/date-range", SeanceController.getSeancesByDateRange);
 router.get("/seances/:id", SeanceController.getSeanceById);
 router.get("/seances/:id/complete", SeanceController.getSeanceWithVoies);
 router.get("/seances/user/:userId", SeanceController.getSeancesByUserId);
+router.get("/seances/user/:userId/stats", SeanceController.getUserStats);
 router.post("/seances", SeanceController.createSeance);
 router.put("/seances/:id", SeanceController.updateSeance);
 router.delete("/seances/:id", SeanceController.deleteSeance);

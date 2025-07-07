@@ -13,20 +13,22 @@ const cleanTables = async (): Promise<void> => {
   console.log("✅ Tables nettoyées avec succès");
 };
 
-// Fonction pour générer une localisation aléatoire en France
-const generateLocation = () => {
-  // Coordonnées approximatives de la France
-  const latitude = faker.location.latitude({ min: 41.0, max: 51.0 });
-  const longitude = faker.location.longitude({ min: -5.0, max: 10.0 });
-
-  return {
-    latitude,
-    longitude
-  };
-};
+// Liste de villes françaises avec coordonnées
+const frenchCities = [
+  { name: "Paris", latitude: 48.8566, longitude: 2.3522 },
+  { name: "Lyon", latitude: 45.7640, longitude: 4.8357 },
+  { name: "Marseille", latitude: 43.2965, longitude: 5.3698 },
+  { name: "Toulouse", latitude: 43.6047, longitude: 1.4442 },
+  { name: "Nice", latitude: 43.7102, longitude: 7.2620 },
+  { name: "Nantes", latitude: 47.2184, longitude: -1.5536 },
+  { name: "Strasbourg", latitude: 48.5734, longitude: 7.7521 },
+  { name: "Montpellier", latitude: 43.6119, longitude: 3.8777 },
+  { name: "Bordeaux", latitude: 44.8378, longitude: -0.5792 },
+  { name: "Lille", latitude: 50.6292, longitude: 3.0573 }
+];
 
 // Fonction pour générer une salle d'escalade aléatoire
-const generateSalle = (adminId: number, localisationId: number) => {
+const generateSalle = (adminId: number, localisationId: number, city: string) => {
   const salleNames = [
     "Bloc & Co",
     "Vertical Art",
@@ -41,7 +43,6 @@ const generateSalle = (adminId: number, localisationId: number) => {
   ];
 
   const salleName = faker.helpers.arrayElement(salleNames);
-  const city = faker.location.city();
 
   return {
     admin_id: adminId,
@@ -76,8 +77,13 @@ const insertSalles = async (): Promise<void> => {
     // Générer 8 salles
     const salles = [];
     for (let i = 0; i < 8; i++) {
-      // Créer une localisation
-      const location = generateLocation();
+      // Choisir une ville aléatoire
+      const cityObj = faker.helpers.arrayElement(frenchCities);
+      const city = cityObj.name;
+      const location = {
+        latitude: cityObj.latitude,
+        longitude: cityObj.longitude
+      };
       const { data: locationData, error: locationError } = await supabase
         .from("localisation")
         .insert([location])
@@ -91,7 +97,8 @@ const insertSalles = async (): Promise<void> => {
       // Créer une salle
       const salle = generateSalle(
         faker.helpers.arrayElement(userIds),
-        locationData.id
+        locationData.id,
+        city
       );
 
       const { data: salleData, error: salleError } = await supabase

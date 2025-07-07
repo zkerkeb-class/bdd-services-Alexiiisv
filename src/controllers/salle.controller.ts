@@ -6,8 +6,29 @@ export class SalleController {
   // GET /api/salles
   static async getAllSalles(req: Request, res: Response) {
     try {
-      const salles = await salleService.getAll();
-      res.json({ success: true, data: salles });
+      // Récupérer les salles avec le nombre de voies
+      const { data: salles, error } = await supabase
+        .from('salles')
+        .select(`
+          *,
+          voies (count)
+        `);
+
+      if (error) {
+        console.error('Error fetching salles:', error);
+        return res.status(500).json({ 
+          success: false, 
+          error: 'Failed to fetch salles' 
+        });
+      }
+
+      // Transformer les données pour inclure le nombre de voies
+      const sallesWithVoieCount = salles?.map(salle => ({
+        ...salle,
+        nombre_voies: salle.voies?.[0]?.count || 0
+      })) || [];
+
+      res.json({ success: true, data: sallesWithVoieCount });
     } catch (error) {
       console.error('Error fetching salles:', error);
       res.status(500).json({ 
@@ -57,12 +78,13 @@ export class SalleController {
         });
       }
 
-      // Récupérer la salle avec ses voies
+      // Récupérer la salle avec ses voies et sa localisation
       const { data: salle, error: salleError } = await supabase
         .from('salles')
         .select(`
           *,
-          voies (*)
+          voies (*),
+          localisation:localisation (latitude, longitude)
         `)
         .eq('id', id)
         .single();

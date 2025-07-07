@@ -112,7 +112,7 @@ export class SeanceController {
   // POST /api/seances
   static async createSeance(req: Request, res: Response) {
     try {
-      const { user_id, date, avis } = req.body;
+      const { user_id, date, avis, salle_id } = req.body;
 
       // Validation
       if (!user_id || !date) {
@@ -134,7 +134,8 @@ export class SeanceController {
       const seanceData: Partial<Seance> = {
         user_id,
         date: seanceDate.toISOString(),
-        avis
+        avis,
+        salle_id
       };
 
       const newSeance = await seanceService.create(seanceData);
@@ -259,6 +260,117 @@ export class SeanceController {
       res.status(500).json({ 
         success: false, 
         error: 'Failed to fetch seances by date range' 
+      });
+    }
+  }
+
+  // GET /api/seances/user/:userId/stats
+  static async getUserStats(req: Request, res: Response) {
+    try {
+      const userId = parseInt(req.params.userId);
+      if (isNaN(userId)) {
+        return res.status(400).json({ 
+          success: false, 
+          error: 'Invalid user ID' 
+        });
+      }
+
+      // Récupérer toutes les séances de l'utilisateur avec leurs voies
+      const { data: seances, error: seancesError } = await supabase
+      .from('seances')
+      .select(`
+        *,
+        voie (
+          *,
+          voies (*)
+        )
+      `)
+      .eq('user_id', userId);
+
+      if (seancesError) {
+        throw seancesError;
+      }
+
+      if (!seances || seances.length === 0) {
+        return res.json({
+          success: true,
+          data: {
+            ascensions: 0,
+            sallesVisitees: 0,
+            niveauMax: null,
+            joursGrimpe: 0
+          }
+        });
+      }
+
+      // Calculer les statistiques
+      let ascensions = 0;
+      const sallesVisitees = new Set<number>();
+      const cotationsReussies: string[] = [];
+      const joursGrimpe = new Set<string>();
+
+      seances.forEach(seance => {
+        // Compter les jours de grimpe (1 par jour)
+        const dateJour = seance.date.split('T')[0];
+        joursGrimpe.add(dateJour);
+
+        // Compter les salles visitées
+        if (seance.salle_id) {
+          sallesVisitees.add(seance.salle_id);
+        }
+
+        // Compter les voies réussies et récupérer les cotations
+        if (seance.voie) {
+          seance.voie.forEach((voieSeance: any) => {
+            if (voieSeance.reussie) {
+              ascensions++;
+              if (voieSeance.voies && voieSeance.voies.cotation) {
+                cotationsReussies.push(voieSeance.voies.cotation);
+              }
+            }
+          });
+        }
+      });
+
+      // Fonction pour comparer les cotations
+      const compareCotation = (a: string, b: string): number => {
+        const grades = [
+          '3a', '3a+', '3b', '3b+', '3c', '3c+',
+          '4a', '4a+', '4b', '4b+', '4c', '4c+',
+          '5a', '5a+', '5b', '5b+', '5c', '5c+',
+          '6a', '6a+', '6b', '6b+', '6c', '6c+',
+          '7a', '7a+', '7b', '7b+', '7c', '7c+',
+          '8a', '8a+', '8b', '8b+', '8c', '8c+',
+          '9a', '9a+', '9b', '9b+', '9c', '9c+'
+        ];
+        const indexA = grades.indexOf(a.toLowerCase());
+        const indexB = grades.indexOf(b.toLowerCase());
+        return indexA - indexB;
+      };
+
+      // Trouver le niveau max
+      const niveauMax = cotationsReussies.length > 0 
+        ? cotationsReussies.reduce((max, current) => 
+            compareCotation(current, max) > 0 ? current : max
+          )
+        : null;
+
+        console.log(niveauMax);
+
+      res.json({
+        success: true,
+        data: {
+          ascensions,
+          sallesVisitees: sallesVisitees.size,
+          niveauMax,
+          joursGrimpe: joursGrimpe.size
+        }
+      });
+    } catch (error) {
+      console.error('Error fetching user stats:', error);
+      res.status(500).json({ 
+        success: false, 
+        error: 'Failed to fetch user stats' 
       });
     }
   }
