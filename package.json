@@ -1,0 +1,51 @@
+{
+  "name": "bdd-service",
+  "version": "1.0.0",
+  "description": "Service de base de données avec API Express",
+  "main": "dist/index.js",
+  "scripts": {
+    "start": "node dist/index.js",
+    "dev": "nodemon",
+    "build": "tsc",
+    "watch": "tsc -w",
+    "test": "jest",
+    "seed": "ts-node src/scripts/seed-users.ts",
+    "seed:users": "ts-node src/scripts/seed-users.ts",
+    "seed:salles": "ts-node src/scripts/seed-salles.ts",
+    "seed:voies": "ts-node src/scripts/seed-voies.ts",
+    "seed:seances": "ts-node src/scripts/seed-seances.ts",
+    "seed:chat": "ts-node src/scripts/seed-chat-conversations.ts",
+    "seed:logs": "ts-node src/scripts/seed-logs.ts",
+    "seed:all": "ts-node src/scripts/seed-all.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "@faker-js/faker": "^8.4.1",
+    "@supabase/supabase-js": "^2.50.0",
+    "@types/jsonwebtoken": "^9.0.10",
+    "bcrypt": "^5.1.1",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "helmet": "^7.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "morgan": "^1.10.0",
+    "pg": "^8.11.3"
+  },
+  "devDependencies": {
+    "@types/bcrypt": "^5.0.2",
+    "@types/cors": "^2.8.17",
+    "@types/express": "^4.17.21",
+    "@types/jest": "^29.5.11",
+    "@types/morgan": "^1.9.9",
+    "@types/node": "^20.11.0",
+    "@types/pg": "^8.10.9",
+    "jest": "^29.7.0",
+    "nodemon": "^3.0.2",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.3.3"
+  }
+}

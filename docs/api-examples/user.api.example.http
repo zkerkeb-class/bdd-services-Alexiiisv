@@ -1,0 +1,275 @@
+### Variables d'environnement pour REST Client
+@baseUrl = http://localhost:3003
+@userId = 1
+
+### ========================================
+### TESTS POUR USER CONTROLLER
+### ========================================
+
+### 1. Récupérer tous les utilisateurs
+GET {{baseUrl}}/api/users
+Content-Type: application/json
+
+###
+
+### 2. Récupérer un utilisateur par ID (exemple avec ID = 1)
+GET {{baseUrl}}/api/users/{{userId}}
+Content-Type: application/json
+
+###
+
+### 3. Récupérer un utilisateur par ID (exemple avec ID = 2)
+GET {{baseUrl}}/api/users/2
+Content-Type: application/json
+
+###
+
+### 4. Récupérer un utilisateur avec un ID invalide (test d'erreur)
+GET {{baseUrl}}/api/users/abc
+Content-Type: application/json
+
+###
+
+### 5. Récupérer un utilisateur avec un ID inexistant (test d'erreur)
+GET {{baseUrl}}/api/users/999
+Content-Type: application/json
+
+###
+
+### 6. Créer un nouvel utilisateur (pour avoir des données à tester)
+POST {{baseUrl}}/api/users
+Content-Type: application/json
+
+{
+  "username": "testuser",
+  "email": "test@example.com",
+  "password": "password123"
+}
+
+###
+
+### 7. Rechercher des utilisateurs par critères
+GET {{baseUrl}}/api/users/search?username=testuser
+Content-Type: application/json
+
+###
+
+### 8. Rechercher des utilisateurs par email
+GET {{baseUrl}}/api/users/search?email=testuser@example.com
+Content-Type: application/json
+
+###
+
+### 9. Connexion utilisateur
+POST {{baseUrl}}/api/users/login
+Content-Type: application/json
+
+{
+  "email": "testuser@example.com",
+  "password": "Test12345!"
+}
+
+###
+
+### 10. ID invalide (string au lieu de number)
+GET {{baseUrl}}/api/users/abc
+Content-Type: application/json
+
+###
+
+### 11. ID inexistant (très grand nombre)
+GET {{baseUrl}}/api/users/999999
+Content-Type: application/json
+
+###
+
+### 12. ID négatif
+GET {{baseUrl}}/api/users/-1
+Content-Type: application/json
+
+###
+
+### 13. ID décimal
+GET {{baseUrl}}/api/users/1.5
+Content-Type: application/json
+
+###
+
+### 14. ID avec caractères spéciaux
+GET {{baseUrl}}/api/users/1@2
+Content-Type: application/json
+
+###
+
+### 15. Données manquantes - pas de username
+POST {{baseUrl}}/api/users
+Content-Type: application/json
+
+{
+  "email": "test@example.com",
+  "password": "password123"
+}
+
+###
+
+### 16. Données manquantes - pas d'email
+POST {{baseUrl}}/api/users
+Content-Type: application/json
+
+{
+  "username": "testuser",
+  "password": "password123"
+}
+
+###
+
+### 17. Données manquantes - pas de password
+POST {{baseUrl}}/api/users
+Content-Type: application/json
+
+{
+  "username": "testuser",
+  "email": "test@example.com"
+}
+
+###
+
+### 18. Email invalide
+POST {{baseUrl}}/api/users
+Content-Type: application/json
+
+{
+  "username": "testuser",
+  "email": "invalid-email",
+  "password": "password123"
+}
+
+###
+
+### 19. Password trop court
+POST {{baseUrl}}/api/users
+Content-Type: application/json
+
+{
+  "username": "testuser",
+  "email": "test@example.com",
+  "password": "123"
+}
+
+###
+
+### 20. Username avec caractères spéciaux
+POST {{baseUrl}}/api/users
+Content-Type: application/json
+
+{
+  "username": "test@user!",
+  "email": "test@example.com",
+  "password": "password123"
+}
+
+###
+
+### 21. Body vide
+POST {{baseUrl}}/api/users
+Content-Type: application/json
+
+{}
+
+###
+
+### 22. ID invalide pour mise à jour
+PUT {{baseUrl}}/api/users/abc
+Content-Type: application/json
+
+{
+  "username": "updateduser"
+}
+
+###
+
+### 23. ID inexistant pour mise à jour
+PUT {{baseUrl}}/api/users/999999
+Content-Type: application/json
+
+{
+  "username": "updateduser"
+}
+
+###
+
+### 24. Mise à jour avec email invalide
+PUT {{baseUrl}}/api/users/{{userId}}
+Content-Type: application/json
+
+{
+  "email": "invalid-email"
+}
+
+###
+
+### 25. Mise à jour avec password trop court
+PUT {{baseUrl}}/api/users/{{userId}}
+Content-Type: application/json
+
+{
+  "password": "123"
+}
+
+###
+
+### 26. Body vide pour mise à jour
+PUT {{baseUrl}}/api/users/{{userId}}
+Content-Type: application/json
+
+{}
+
+###
+
+### 27. ID invalide pour suppression
+DELETE {{baseUrl}}/api/users/abc
+Content-Type: application/json
+
+###
+
+### 28. ID inexistant pour suppression
+DELETE {{baseUrl}}/api/users/999999
+Content-Type: application/json
+
+###
+
+### 29. Recherche sans paramètres
+GET {{baseUrl}}/api/users/search
+Content-Type: application/json
+
+###
+
+### 30. Recherche avec paramètre invalide
+GET {{baseUrl}}/api/users/search?invalid=value
+Content-Type: application/json
+
+###
+
+### 31. Recherche avec valeur vide
+GET {{baseUrl}}/api/users/search?username=
+Content-Type: application/json
+
+###
+
+### 32. Username long mais raisonnable
+POST {{baseUrl}}/api/users
+Content-Type: application/json
+
+{
+  "username": "usernametreslongusernametreslongusernametreslongusernametreslongusernametreslongusernametreslongusernametreslongusernametreslongusernametreslong",
+  "email": "longuser@example.com",
+  "password": "password123"
+}
+
+###
+
+### ========================================
+### INSTRUCTIONS D'UTILISATION
+### ========================================
+
+# Se référer au README.md dans le dossier docs/api-examples
