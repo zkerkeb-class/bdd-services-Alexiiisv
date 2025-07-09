@@ -2,12 +2,14 @@ import { supabase } from '../config/supabase';
 
 // Types pour les entités
 export interface User {
-  id?: number;
+  id: number;
   username: string;
   email: string;
   password_hash: string;
-  created_at?: string;
-  updated_at?: string;
+  created_at: string;
+  updated_at: string;
+  premium: boolean; // <-- Ajouté
+  password?: string; // Ajouté pour les requêtes de mise à jour
 }
 
 export interface Profile {
@@ -181,8 +183,26 @@ export class SupabaseService<T> {
   }
 }
 
+// Service spécifique pour les utilisateurs avec méthode premium
+export class UserService extends SupabaseService<User> {
+  constructor() {
+    super('users');
+  }
+
+  async setUserPremium(userId: number) {
+    const { data, error } = await supabase
+      .from('users')
+      .update({ premium: true })
+      .eq('id', userId)
+      .select()
+      .single();
+    if (error) throw error;
+    return data;
+  }
+}
+
 // Services spécifiques pour chaque table
-export const userService = new SupabaseService<User>('users');
+export const userService = new UserService();
 export const profileService = new SupabaseService<Profile>('profiles');
 export const localisationService = new SupabaseService<Localisation>('localisation');
 export const sessionService = new SupabaseService<Session>('sessions');

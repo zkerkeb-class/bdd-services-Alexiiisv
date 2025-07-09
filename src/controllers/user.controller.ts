@@ -121,7 +121,10 @@ export class UserController {
         });
       }
 
-      res.json({ success: true, data: user });
+      // Inclure le champ premium dans la réponse
+      res.json({ success: true, data: { ...user, premium: user.premium } });
+      return;
+
     } catch (error) {
       console.error('Error fetching user:', error);
       res.status(500).json({ 
@@ -182,14 +185,12 @@ export class UserController {
         });
       }
 
-      const { username, email, password } = req.body;
-      const updateData: Partial<User> = {};
-
-      if (username) updateData.username = username;
-      if (email) updateData.email = email;
-      if (password) {
+      const updateData: Partial<User> = { ...req.body };
+      // Si on veut changer le mot de passe, il faut le hasher
+      if (updateData.password) {
         const saltRounds = 10;
-        updateData.password_hash = await bcrypt.hash(password, saltRounds);
+        updateData.password_hash = await bcrypt.hash(updateData.password, saltRounds);
+        delete updateData.password;
       }
 
       const updatedUser = await userService.update(id, updateData);
