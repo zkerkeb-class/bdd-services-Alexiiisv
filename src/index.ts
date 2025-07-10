@@ -21,7 +21,7 @@ app.use("/api", routes);
 
 // Route de test
 app.get("/health", (req: Request, res: Response) => {
-  return res.json({ status: "OK", message: "Service is running" });
+  return res.json({ status: "OK", service: "bdd-service" });
 });
 
 // Gestion des erreurs
